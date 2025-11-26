@@ -1,0 +1,65 @@
+{
+  "vhosts": [
+    { "name": "/" }
+  ],
+  "users": [
+    {
+      "name": "guest",
+      "password": "guest",
+      "tags": "administrator"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "guest",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "queues": [
+    {
+      "name": "queue_technical_urgent",
+      "vhost": "/",
+      "durable": true,
+      "arguments":{
+        "x-dead-letter-exchange": "dlx-failed",
+        "x-dead-letter-routing-key": "dlx-fails"
+      }
+    },
+    {
+      "name": "queue_billing_normal",
+      "vhost": "/",
+      "durable": true,
+      "arguments":{
+        "x-dead-letter-exchange": "dlx-failed",
+        "x-dead-letter-routing-key": "dlx-fails"
+      }
+    },
+    {
+      "name": "queue_failed_messages",
+      "vhost": "/",
+      "durable": true
+    }
+  ],
+  "exchanges":[
+    {
+      "name": "dlx-failed",
+      "vhost": "/",
+      "type": "direct",
+      "routing-key": "dlx-fails",
+      "durable": true
+    }
+  ],
+  
+  "bind":[
+    {
+      "exchange": "dlx-failed",
+      "vhost": "/",
+      "queue": "queue_failed_messages",
+      "routing-key": "dlx-fails"
+    }
+  ]
+
+}
