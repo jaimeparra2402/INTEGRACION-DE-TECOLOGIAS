@@ -38,6 +38,16 @@
       }
     },
     {
+      "name": "queue_vip_urgent",
+      "vhost": "/",
+      "durable": true
+    },
+    {
+      "name": "queue_others_incidents",
+      "vhost": "/",
+      "durable": true
+    },
+    {
       "name": "queue_failed_messages",
       "vhost": "/",
       "durable": true

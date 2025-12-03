@@ -5,7 +5,7 @@ help:
 	@echo " make deploy			- Construye y levanta la imagen"
 	@echo " make down			- Para los contenedores y los elimina"
 	@echo " make stop			- Para los contenedores"	
-	@echo " make delete volume  - Para el contenedor, los elimina junto a los volumenes"
+	@echo " make rmvolume  		- Elimina el volumen de la BD"
 
 build:
 	docker-compose -f docker-compose.yml build
@@ -22,5 +22,5 @@ down:
 stop:
 	docker-compose -f docker-compose.yml stop
 
-delete volume:
-	docker-compose -f docker-compose.yml down -v
+rmvolume:
+	docker volume rm proyecto_postgres_data

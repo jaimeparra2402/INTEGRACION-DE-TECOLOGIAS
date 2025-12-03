@@ -1,0 +1,2 @@
+test
+    curl -X POST -H "Content-Type: application/json" -d '{"email":{ "email_to":"grupo9@example.com", "email_from":"correo1@example.com"}, "body": "No enciende la pantalla del ordenador"}' http://localhost:5678/webhook-test/
