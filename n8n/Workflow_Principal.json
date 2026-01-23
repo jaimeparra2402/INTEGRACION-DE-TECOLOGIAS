@@ -1,0 +1,583 @@
+{
+  "name": "Workflow_Principal",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ab348ec6-2fc1-4e0d-8864-354047f934e0",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "93789228-8f44-476b-bad0-1f70a2b2add1",
+      "name": "Webhook",
+      "webhookId": "d456695d-e0ce-4b13-9e40-b3eccff51b45"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Actúa como un sistema experto de triaje y clasificación de correos electrónicos para un departamento de atención al cliente. Tu tarea es analizar el correo entrante y estructurar los datos para su procesamiento automático.\n\nENTRADAS:\n--------------------------------------------------\nEmail del Emisor: {{ $json.body.email.email_from }}\nCuerpo del Correo: {{ $json.body.body }}\n--------------------------------------------------\n\nINSTRUCCIONES DE ANÁLISIS:\n1. Lee detenidamente el cuerpo del correo.\n2. Determina la urgencia basándote en el tono y palabras clave (ej: \"urgente\", \"caído\", \"error crítico\" = Alta).\n3. Clasifica el correo en una de las categorías permitidas basándote en la intención principal.\n4. Genera un resumen conciso de una sola frase.\n\nREGLAS DE FORMATO (ESTRICTO):\n- Tu respuesta debe ser ÚNICAMENTE un objeto JSON válido.\n- No incluyas bloques de código markdown (```json ... ```).\n- No incluyas texto introductorio ni conclusiones.\n- Asegúrate de escapar correctamente cualquier carácter especial dentro del JSON.\n\nVALORES PERMITIDOS:\n- urgency: \"Alta\", \"Media\", \"Baja\"\n- category: \"Tecnica\", \"Facturacion\", \"Ventas\", \"General\"\n\nESTRUCTURA DEL JSON DE SALIDA:\n{\n  \"summary\": \"Resumen de una frase del problema detectado.\",\n  \"urgency\": \"Nivel de urgencia\",\n  \"category\": \"Categoría seleccionada\"\n}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        240,
+        0
+      ],
+      "id": "aff39c93-829a-432a-afdf-0a6a1fdb0a4a",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "srhWm6AK15Xpy8Qh",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return JSON.parse($input.first().json.content.parts[0].text);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "82e520cd-6c60-400b-b276-57d24642f084",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75e7712e-2aef-436e-958b-17df530d4562",
+              "leftValue": "={{ $('EsCliente').item }}",
+              "rightValue": "undefined",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "0a7fb777-7d5d-4238-8cab-c40b0de23522",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "value": "public",
+          "mode": "list",
+          "cachedResultName": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "customers",
+          "mode": "list",
+          "cachedResultName": "customers"
+        },
+        "limit": 10,
+        "where": {
+          "values": [
+            {
+              "column": "email",
+              "value": "={{ $('Webhook').item.json.body.email.email_from }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        800,
+        0
+      ],
+      "id": "d5016f38-1462-4ea7-a32e-da2ef9b66c92",
+      "name": "EsCliente",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "MdsOFNRJsHzonpPX",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tickets",
+          "mode": "list",
+          "cachedResultName": "tickets"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "customer_email": "={{ $('Webhook').item.json.body.email.email_from }}",
+            "summary": "={{ $('Code in JavaScript').item.json.summary }}",
+            "category": "={{ $('Code in JavaScript').item.json.category }}",
+            "urgency": "={{ $('Code in JavaScript').item.json.urgency }}",
+            "status": "Nuevo"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TIMESTAMP",
+              "displayName": "TIMESTAMP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "customer_email",
+              "displayName": "customer_email",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "urgency",
+              "displayName": "urgency",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "n8n_run_url",
+              "displayName": "n8n_run_url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1344,
+        16
+      ],
+      "id": "7a0aca26-2ee4-4bc1-a15f-1ef732503e1a",
+      "name": "AñadirTicket",
+      "credentials": {
+        "postgres": {
+          "id": "MdsOFNRJsHzonpPX",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "errorMessage": "Tu no estás registrado, Primero necesitas registrarte"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        -160
+      ],
+      "id": "08f5ac92-3bd1-430f-a127-4cb51f59b697",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "mode": "expression",
+        "output": "={{ $('EsCliente').item.json.vip_status === true && $json.urgency === 'Alta' ? 0 :\n  $json.category === 'Tecnica' && $json.urgency === 'Alta'? 1 :\n  $json.category==='Facturacion' ? 2 : 3}}"
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        1552,
+        -16
+      ],
+      "id": "b4d95689-1d6d-4a63-8387-2bf109edda1a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        0
+      ],
+      "id": "57750015-4cef-4cb6-9b7c-4035a45c9219",
+      "name": "Tecnica_urgente",
+      "credentials": {
+        "rabbitmq": {
+          "id": "EnZJJLzArIC70GgD",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        128
+      ],
+      "id": "e0f151a9-62a0-4713-b4fa-45d2d7f64f98",
+      "name": "Facturacion",
+      "credentials": {
+        "rabbitmq": {
+          "id": "EnZJJLzArIC70GgD",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "4uuG7NFFfCdQUU1X",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/4uuG7NFFfCdQUU1X",
+          "cachedResultName": "Sub-Notificacion"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        2592,
+        16
+      ],
+      "id": "4306faf4-ec8c-4e2d-bec3-1ca09801be89",
+      "name": "Call 'Sub-Notificacion'"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        -128
+      ],
+      "id": "1198928e-f93e-4322-bd6d-842a10f40917",
+      "name": "Vip_urgente",
+      "credentials": {
+        "rabbitmq": {
+          "id": "EnZJJLzArIC70GgD",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        1952,
+        256
+      ],
+      "id": "8dd6dcf4-07a3-4d34-b35f-3f8a28f96c80",
+      "name": "Otros",
+      "credentials": {
+        "rabbitmq": {
+          "id": "EnZJJLzArIC70GgD",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2352,
+        16
+      ],
+      "id": "07330a31-5da3-4341-a967-197e54ea200c",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "EsCliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AñadirTicket",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EsCliente": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AñadirTicket": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Vip_urgente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Tecnica_urgente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Facturacion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Otros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tecnica_urgente": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vip_urgente": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facturacion": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Otros": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Call 'Sub-Notificacion'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "availableInMCP": false,
+    "errorWorkflow": "AOmqaAyAt7eS8Vba"
+  },
+  "versionId": "d85ea366-4f27-4e54-9da8-58887b202c4f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c2610867985599bc95d06b233596937e9c95f2f5fbe39e2d6f329f86398f38e"
+  },
+  "id": "0yv4jVCG7prn17Z3",
+  "tags": []
+}

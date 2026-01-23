@@ -1,0 +1,54 @@
+{
+  "name": "Sub-NotificacionCliente",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ccf65494-487a-41c4-bc28-5efcb7b4afd4",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "569d847b-d62f-451d-abfa-a4753b2dd846",
+      "name": "Send email",
+      "webhookId": "83ceb9e0-b56a-4b55-8f36-8dd38cd7c9a9"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "647a25a7-d30d-4261-a934-1950d0e1d12e",
+  "meta": {
+    "instanceId": "3c2610867985599bc95d06b233596937e9c95f2f5fbe39e2d6f329f86398f38e"
+  },
+  "id": "4uuG7NFFfCdQUU1X",
+  "tags": []
+}
