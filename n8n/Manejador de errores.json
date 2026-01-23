@@ -1,0 +1,134 @@
+{
+  "name": "Manejador de errores",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e5dd8d12-40eb-4ed6-8b48-bd1798e9019d",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1J5Mpbsqz2oKJJGt8ARr8QOYjgECBYwMz25Q4La4hY2s",
+          "mode": "list",
+          "cachedResultName": "Manejador de Errores",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J5Mpbsqz2oKJJGt8ARr8QOYjgECBYwMz25Q4La4hY2s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J5Mpbsqz2oKJJGt8ARr8QOYjgECBYwMz25Q4La4hY2s/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TimeStamp": "={{ $now }}",
+            "Workflow Fallido": "={{ $json.workflow.name }}",
+            "Url de Ejecución": "={{ $json.execution.url }}",
+            "Mensaje de Error": "={{ $json.execution.error.message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TimeStamp",
+              "displayName": "TimeStamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Workflow Fallido",
+              "displayName": "Workflow Fallido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nodo Fallido",
+              "displayName": "Nodo Fallido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensaje de Error",
+              "displayName": "Mensaje de Error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Url de Ejecución",
+              "displayName": "Url de Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e68fe90e-9eb3-4316-8a10-e2f1023e1c19",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "LkoA6uBMELiAFUz4",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5e3234a2-a4e6-485d-9b58-2c432475e6bb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4751b28b0ad03a4ded00a562072481cb865fe24b3ad8a58c7261637130e4e8b4"
+  },
+  "id": "AsjhtAjlKsLP20Us",
+  "tags": []
+}

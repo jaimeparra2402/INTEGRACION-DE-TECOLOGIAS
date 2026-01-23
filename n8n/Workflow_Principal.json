@@ -4,16 +4,17 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "ab348ec6-2fc1-4e0d-8864-354047f934e0",
+        "path": "08f17bf3-21fe-4308-a6b1-754f98077083",
+        "responseMode": "responseNode",
         "options": {}
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        0,
-        0
+        -1344,
+        160
       ],
-      "id": "93789228-8f44-476b-bad0-1f70a2b2add1",
+      "id": "b61c28bc-5acb-4ce7-86ad-9c0c9352d74f",
       "name": "Webhook",
       "webhookId": "d456695d-e0ce-4b13-9e40-b3eccff51b45"
     },
@@ -38,14 +39,14 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        240,
-        0
+        -1104,
+        160
       ],
-      "id": "aff39c93-829a-432a-afdf-0a6a1fdb0a4a",
+      "id": "e5f68c43-ac1c-4f3a-a5df-35d1ddaa4d1f",
       "name": "Message a model",
       "credentials": {
         "googlePalmApi": {
-          "id": "srhWm6AK15Xpy8Qh",
+          "id": "0wTa1RixqJ6ycyxr",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -57,10 +58,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        592,
-        0
+        -752,
+        160
       ],
-      "id": "82e520cd-6c60-400b-b276-57d24642f084",
+      "id": "bbb7ba11-a6cf-464b-b3f1-58e198cbb425",
       "name": "Code in JavaScript"
     },
     {
@@ -75,7 +76,7 @@
           "conditions": [
             {
               "id": "75e7712e-2aef-436e-958b-17df530d4562",
-              "leftValue": "={{ $('EsCliente').item }}",
+              "leftValue": "={{ $('EsCliente').item.json }}",
               "rightValue": "undefined",
               "operator": {
                 "type": "object",
@@ -91,10 +92,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1008,
-        0
+        -336,
+        160
       ],
-      "id": "0a7fb777-7d5d-4238-8cab-c40b0de23522",
+      "id": "ba5f3333-b012-4729-bf54-111c8053aa73",
       "name": "If"
     },
     {
@@ -126,15 +127,15 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        800,
-        0
+        -544,
+        160
       ],
-      "id": "d5016f38-1462-4ea7-a32e-da2ef9b66c92",
+      "id": "8a2c4d33-3b57-4049-9612-b26bfc5a2da4",
       "name": "EsCliente",
       "alwaysOutputData": true,
       "credentials": {
         "postgres": {
-          "id": "MdsOFNRJsHzonpPX",
+          "id": "51cOTrXqWwY96ny3",
           "name": "Postgres account"
         }
       }
@@ -249,30 +250,17 @@
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        1344,
-        16
+        0,
+        176
       ],
-      "id": "7a0aca26-2ee4-4bc1-a15f-1ef732503e1a",
+      "id": "980906f3-6a20-4af4-9ea4-b29fd9493f44",
       "name": "AñadirTicket",
       "credentials": {
         "postgres": {
-          "id": "MdsOFNRJsHzonpPX",
+          "id": "51cOTrXqWwY96ny3",
           "name": "Postgres account"
         }
       }
-    },
-    {
-      "parameters": {
-        "errorMessage": "Tu no estás registrado, Primero necesitas registrarte"
-      },
-      "type": "n8n-nodes-base.stopAndError",
-      "typeVersion": 1,
-      "position": [
-        1344,
-        -160
-      ],
-      "id": "08f5ac92-3bd1-430f-a127-4cb51f59b697",
-      "name": "Stop and Error"
     },
     {
       "parameters": {
@@ -282,27 +270,28 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        1552,
-        -16
+        208,
+        144
       ],
-      "id": "b4d95689-1d6d-4a63-8387-2bf109edda1a",
+      "id": "0e390ac7-4319-4359-ad6b-493836c9349b",
       "name": "Switch"
     },
     {
       "parameters": {
+        "queue": "queue_technical_urgent",
         "options": {}
       },
       "type": "n8n-nodes-base.rabbitmq",
       "typeVersion": 1.1,
       "position": [
-        1952,
-        0
+        608,
+        160
       ],
-      "id": "57750015-4cef-4cb6-9b7c-4035a45c9219",
+      "id": "27f5b6b9-4646-4c5a-b904-7d70d1545cd7",
       "name": "Tecnica_urgente",
       "credentials": {
         "rabbitmq": {
-          "id": "EnZJJLzArIC70GgD",
+          "id": "U70VzmNvOzJcfWEu",
           "name": "RabbitMQ account"
         }
       }
@@ -314,26 +303,111 @@
       "type": "n8n-nodes-base.rabbitmq",
       "typeVersion": 1.1,
       "position": [
-        1952,
-        128
+        608,
+        288
       ],
-      "id": "e0f151a9-62a0-4713-b4fa-45d2d7f64f98",
+      "id": "bdb28df8-9acc-4032-84c2-c69ceb69ad8e",
       "name": "Facturacion",
       "credentials": {
         "rabbitmq": {
-          "id": "EnZJJLzArIC70GgD",
+          "id": "U70VzmNvOzJcfWEu",
           "name": "RabbitMQ account"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        32
+      ],
+      "id": "64c4a5fd-feab-4024-a4fd-d1e28b91968e",
+      "name": "Vip_urgente",
+      "credentials": {
+        "rabbitmq": {
+          "id": "U70VzmNvOzJcfWEu",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        608,
+        416
+      ],
+      "id": "58aa7263-4d7c-4bbf-a3c7-9fb18416717f",
+      "name": "Otros",
+      "credentials": {
+        "rabbitmq": {
+          "id": "U70VzmNvOzJcfWEu",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "254e7565-69c5-47e2-84a9-29205bda8047",
+              "name": "message",
+              "value": "Se ha recibido el ticket correctamente",
+              "type": "string"
+            },
+            {
+              "id": "2951c7dc-9809-4c8a-8696-6e81f4ab8ba3",
+              "name": "email",
+              "value": "={{ $('Webhook').item.json.body.email.email_from }}",
+              "type": "string"
+            },
+            {
+              "id": "7960f589-3456-498d-8693-138243f5a09b",
+              "name": "body.summary",
+              "value": "={{ $('Code in JavaScript').item.json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "ec38bf69-1bfa-411b-bd00-362f8babad88",
+              "name": "body.urgency",
+              "value": "={{ $('Code in JavaScript').item.json.urgency }}",
+              "type": "string"
+            },
+            {
+              "id": "e5735580-c5eb-48c0-8e44-ff71edaf7acd",
+              "name": "body.category",
+              "value": "={{ $('Code in JavaScript').item.json.category }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1008,
+        176
+      ],
+      "id": "623876e0-87a1-437d-b283-79832dd50f7d",
+      "name": "Edit Fields"
     },
     {
       "parameters": {
         "workflowId": {
           "__rl": true,
-          "value": "4uuG7NFFfCdQUU1X",
+          "value": "pCPKJvb6n0iKEeDD",
           "mode": "list",
-          "cachedResultUrl": "/workflow/4uuG7NFFfCdQUU1X",
-          "cachedResultName": "Sub-Notificacion"
+          "cachedResultUrl": "/workflow/pCPKJvb6n0iKEeDD",
+          "cachedResultName": "Sub-NotificacionCliente"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
@@ -344,62 +418,54 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        2592,
+        1248,
+        176
+      ],
+      "id": "c7e109e5-dd01-4c03-98f5-bda08cf726ad",
+      "name": "Call 'Sub-NotificacionCliente'"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=El usuario de correo {{ $('Webhook').item.json.body.email.email_from | \"Anonimo\"}}, necesita registrarte para poder acceder a nuestro servicios"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        64,
         16
       ],
-      "id": "4306faf4-ec8c-4e2d-bec3-1ca09801be89",
-      "name": "Call 'Sub-Notificacion'"
+      "id": "b1ac7ae1-3074-469c-bd76-2f783e3a6408",
+      "name": "Stop and Error"
     },
     {
       "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"El usuario necesita registrarse antes de poder acceder a nuestros servicios\"\n}",
         "options": {}
       },
-      "type": "n8n-nodes-base.rabbitmq",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
       "position": [
-        1952,
-        -128
-      ],
-      "id": "1198928e-f93e-4322-bd6d-842a10f40917",
-      "name": "Vip_urgente",
-      "credentials": {
-        "rabbitmq": {
-          "id": "EnZJJLzArIC70GgD",
-          "name": "RabbitMQ account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.rabbitmq",
-      "typeVersion": 1.1,
-      "position": [
-        1952,
-        256
-      ],
-      "id": "8dd6dcf4-07a3-4d34-b35f-3f8a28f96c80",
-      "name": "Otros",
-      "credentials": {
-        "rabbitmq": {
-          "id": "EnZJJLzArIC70GgD",
-          "name": "RabbitMQ account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        2352,
+        -144,
         16
       ],
-      "id": "07330a31-5da3-4341-a967-197e54ea200c",
-      "name": "Edit Fields"
+      "id": "9bfa062c-4cf8-4eb0-bf60-7cb14c1c4a9e",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"message\": \"La solicitud ha sido procesada con éxito\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1456,
+        176
+      ],
+      "id": "7582d28e-05f7-4e75-9dac-a66cf79a0193",
+      "name": "Respond to Webhook1"
     }
   ],
   "pinData": {},
@@ -441,7 +507,7 @@
       "main": [
         [
           {
-            "node": "Stop and Error",
+            "node": "Respond to Webhook",
             "type": "main",
             "index": 0
           }
@@ -557,7 +623,29 @@
       "main": [
         [
           {
-            "node": "Call 'Sub-Notificacion'",
+            "node": "Call 'Sub-NotificacionCliente'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Sub-NotificacionCliente'": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
             "type": "main",
             "index": 0
           }
@@ -569,15 +657,15 @@
   "settings": {
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
-    "executionTimeout": -1,
     "availableInMCP": false,
-    "errorWorkflow": "AOmqaAyAt7eS8Vba"
+    "errorWorkflow": "AsjhtAjlKsLP20Us",
+    "executionTimeout": -1
   },
-  "versionId": "d85ea366-4f27-4e54-9da8-58887b202c4f",
+  "versionId": "9058d56f-e43c-4dfa-83fb-6e080e9d7590",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "3c2610867985599bc95d06b233596937e9c95f2f5fbe39e2d6f329f86398f38e"
+    "instanceId": "4751b28b0ad03a4ded00a562072481cb865fe24b3ad8a58c7261637130e4e8b4"
   },
-  "id": "0yv4jVCG7prn17Z3",
+  "id": "M3FJjl0OyK9aJ7N9",
   "tags": []
 }

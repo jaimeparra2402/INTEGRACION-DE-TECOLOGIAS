@@ -2,18 +2,25 @@
   "name": "Sub-NotificacionCliente",
   "nodes": [
     {
-      "parameters": {},
+      "parameters": {
+        "inputSource": "passthrough"
+      },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
         0,
         0
       ],
-      "id": "ccf65494-487a-41c4-bc28-5efcb7b4afd4",
+      "id": "51160c22-2d1b-491f-8f2b-425680fd1500",
       "name": "When Executed by Another Workflow"
     },
     {
       "parameters": {
+        "fromEmail": "asr117@inlumine.ual.es",
+        "toEmail": "={{$json.email}}",
+        "subject": "=Ticket recibido {{ $json.body.category }} - {{ $json.body.urgency }}",
+        "emailFormat": "text",
+        "text": "=Hemos recibido su ticket:\n\n{{ $json.body.summary }}\nCategoría: {{$json.body.category  }}\nUrgencia : {{ $json.body.urgency }}",
         "options": {}
       },
       "type": "n8n-nodes-base.emailSend",
@@ -22,9 +29,15 @@
         208,
         0
       ],
-      "id": "569d847b-d62f-451d-abfa-a4753b2dd846",
+      "id": "288ab822-51d1-44a8-a36e-b42c26321af2",
       "name": "Send email",
-      "webhookId": "83ceb9e0-b56a-4b55-8f36-8dd38cd7c9a9"
+      "webhookId": "83ceb9e0-b56a-4b55-8f36-8dd38cd7c9a9",
+      "credentials": {
+        "smtp": {
+          "id": "QGwzSoyN4oiOJF0O",
+          "name": "SMTP account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -43,12 +56,17 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "executionTimeout": -1,
+    "availableInMCP": false,
+    "errorWorkflow": "AsjhtAjlKsLP20Us"
   },
-  "versionId": "647a25a7-d30d-4261-a934-1950d0e1d12e",
+  "versionId": "5b774b8e-89cb-4166-8cda-c7b5f4718041",
   "meta": {
-    "instanceId": "3c2610867985599bc95d06b233596937e9c95f2f5fbe39e2d6f329f86398f38e"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4751b28b0ad03a4ded00a562072481cb865fe24b3ad8a58c7261637130e4e8b4"
   },
-  "id": "4uuG7NFFfCdQUU1X",
+  "id": "pCPKJvb6n0iKEeDD",
   "tags": []
 }
