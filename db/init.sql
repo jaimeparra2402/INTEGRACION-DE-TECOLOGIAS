@@ -1,8 +1,3 @@
--- ===========================
--- CREAR USUARIO
--- ===========================
-CREATE USER incident_user WITH PASSWORD 'pass';
-
 -- Tabla Customers
 CREATE TABLE CUSTOMERS(
     EMAIL varchar(255) PRIMARY KEY,
@@ -23,8 +18,3 @@ CREATE TABLE TICKETS(
 
     FOREIGN KEY(CUSTOMER_EMAIL) REFERENCES CUSTOMERS(EMAIL)
 );
-
---- Otorgar permisos de las tablas creadas
-
-GRANT ALL PRIVILEGES ON TICKETS TO incident_user;
-GRANT ALL PRIVILEGES ON CUSTOMERS TO incident_user;
