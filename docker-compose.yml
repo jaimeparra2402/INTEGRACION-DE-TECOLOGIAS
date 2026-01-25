@@ -35,9 +35,9 @@ services:
       volumes:
         - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
       environment:
-        - RABBITMQ_DEFAULT_VHOST=${RABBIT_VHOST}
-        - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
-        - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+        - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST}
+        - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+        - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
         - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=${RABBIT_ADD_ARGS}
       
       ports:
