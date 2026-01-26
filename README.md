@@ -15,7 +15,7 @@ Clona el repositorio en el equipo
 
 ### Creación de un Fichero .env
 
-Para el correcto funcionamiento del modelo es necesario crear un fichero .env.n8n siguiendo las especificaciones del [ejemplo](.env.example)
+Para el correcto funcionamiento del modelo es necesario crear un fichero .env siguiendo las especificaciones del [ejemplo](.env.example)
 
 ```.env
 RABBITMQ_HOST=incident-management-mq
